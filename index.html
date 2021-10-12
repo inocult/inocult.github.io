@@ -62,14 +62,14 @@
   <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 
   <!-- Adds the title and legend -->
-  <div class="map-overlay">
+<!--  <div class="map-overlay">
     <h3 align="center">Legend</h3>
     <img src="img\fiber_home_1.svg" alt="Girl in a jacket" width="70" height="50">
     <img src="img\wireless_home_1.svg" alt="Girl in a jacket" width="70" height="50">
     <img src="img\nodata_home_1.svg" alt="Girl in a jacket" width="70" height="50">
     <br>
-    <!--    <h6> &nbsp &nbsp &nbsp &nbsp Fiber &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Wireless &nbsp &nbsp Coming Soon</h6> -->
-  </div>
+
+  </div> -->
 
 
   <div class="verticalHeader">
@@ -82,7 +82,7 @@
         </svg> </span>
     </div>
     <div class="verticalOptions" style="grid-template-columns: repeat(4, min-content);">
-      <div class="verticalOption selected" tabindex="0">Services</div>
+      <div class="verticalOption selected" tabindex="0">Hover your cursor on top of homes to see service information</div>
     <!--  <div class="verticalOption " tabindex="0">Vaccins</div>
       <div class="verticalOption " tabindex="0">Actualités et vidéos</div>
       <div class="verticalOption " tabindex="0">Graphiques</div> -->
@@ -436,7 +436,7 @@ C-0.044106817,3.82232633 0.0339650303,4.10117889 0.228632851,4.28948475 Z" id="S
               </svg></div>
           </div>
         </div>
-        <h4 class="segmentTitle">Videos</h4>
+      <!--  <h4 class="segmentTitle">Videos</h4>
         <div class="videoContent"><a href="https://www.youtube.com/watch?v=bFxZbS8KJNc" target="_blank" class="apiContentLink videoCard ">
             <div class="thumbnailContainer"><img class="videoImage" width="323px" height="184px" src="http://img.youtube.com/vi/bFxZbS8KJNc/0.jpg">
               <div class="playIcon"><svg fill="none" height="32" viewBox="0 0 32 32" width="32">
@@ -511,18 +511,19 @@ C-0.044106817,3.82232633 0.0339650303,4.10117889 0.228632851,4.28948475 Z" id="S
           d="M6.25 11.25H8.125V9.375H6.25V11.25ZM11.875 11.25H13.75V9.375H11.875V11.25ZM17.5 8.4375V6.875C17.5 5.8125 16.6875 5 15.625 5H10.625V3.625C11.1875 3.375 11.5625 2.8125 11.5625 2.1875C11.5625 1.3125 10.875 0.625 10 0.625C9.125 0.625 8.4375 1.3125 8.4375 2.1875C8.4375 2.8125 8.8125 3.375 9.375 3.625V5H4.375C3.3125 5 2.5 5.8125 2.5 6.875V8.4375C1.625 8.5625 0.9375 9.375 0.9375 10.3125C0.9375 11.25 1.625 12 2.5 12.1875V13.75C2.5 14.8125 3.3125 15.625 4.375 15.625H5.625V19.0625L12.1875 15.625H15.625C16.6875 15.625 17.5 14.8125 17.5 13.75V12.1875C18.375 12.0625 19.0625 11.25 19.0625 10.3125C19.0625 9.375 18.375 8.625 17.5 8.4375ZM16.25 13.75C16.25 14.125 16 14.375 15.625 14.375H11.875L11.625 14.5L6.875 17V14.375H4.375C4 14.375 3.75 14.125 3.75 13.75V6.875C3.75 6.5 4 6.25 4.375 6.25H15.625C16 6.25 16.25 6.5 16.25 6.875V13.75Z"
           fill="#FFF"></path>
       </svg><span class="title">Poser des questions sur le COVID-19</span></div>
-  </div>
+  </div> -->
 
   <script>
 
     // The value for 'accessToken' begins with 'pk...'
-    const popupTemplate = function(rdnSignal, year) {
+    const popupTemplate = function(rdnSignal, year, feature) {
       let rdnColor = 'rgb(0,155,0)';
       var rdnMaxSignal = -50;
       var rdnMinSignal = -80;
       let rdnPercent = 1;
       let duAvailable =`<h6 style="color:rgb(0,155,0);">Service Available</h6>`;
       let duYes = "Yes";
+      var rdnHtml = "";
       console.log(rdnPercent);
       let rdnAvailable =`<h6 style="color:`+rdnColor+`;">Service Available</h6>`;
       if (rdnSignal < -65 && rdnSignal > -80){
@@ -535,10 +536,40 @@ C-0.044106817,3.82232633 0.0339650303,4.10117889 0.228632851,4.28948475 Z" id="S
         rdnAvailable =`<h6 style="color:`+rdnColor+`;">Service Unavailable</h6>`;
         rdnPercent = 0;
       }
-      if (year == 2021){
+      var duHtml = "";
+      if (feature.properties["duAvail"] == "false"){
         duAvailable =`<h6 style="color:rgb(155,0,0);">Service Unavailable</h6>`;
         duYes="No";
-    }  return `<div class="infoTile" style="width: 200px;">
+    }
+    else {
+      duHtml = `<div class="infoTileData">
+          <h2 class="legend">
+            <div class="color" style="background: rgb(58, 154,80);"></div>
+            <div class="description">Residential Services<br> (Up to 1Gbps)</div>
+            <div class="total">`+duYes+`</div>
+          </h2>
+          <h2 class="legend">
+            <div class="color" style="background:rgb(55, 55, 55);"></div>
+            <div class="description">Commercial Services<br> (Up to 10Gbs)</div>
+            <div class="total ">No</div>
+          </h2>
+          <div style="margin-top:20px" class="deltaConfirmed">Estimated Date: 23/11/`+year+`*</div>
+        </div>`;
+   }
+     if (feature.properties["rdnAvail"]=="true"){
+       rdnHtml = `<div class="bar"><div class="slice" style="background: rgb(221, 221, 221); width: 180px; position:relative;"></div>
+         <div class="slice" style="background:`+rdnColor+`; width: `+rdnPercent*180+`px; left: -180px; position: relative;"></div>
+         <!--<div class="slice" style="background: rgb(58, 154, 80); width: 1.125px; left: -451.79px; position: relative;"></div>-->
+       </div>
+       <div class="infoTileConfirmed">
+         <div style="color:`+rdnColor+`;" class="confirmed">`+Math.round(rdnPercent*50)+`Mbps</div>
+         <div class="deltaConfirmed" title="Nouveaux cas au cours des dernières
+ 24&nbsp;heures">Signal Strength: `+ rdnSignal + `</div>
+       </div>
+       <div style="margin-top:20px" class="deltaConfirmed">Estimated Date: 31/03/2022*</div>
+       <div style="font-size:0.8em;">*Represents worst case estimate</div>`
+     }
+     return `<div class="infoTile" style="width: 200px;">
       <div class="infoTileHeader">
         <div>
           <h2 style="font-size:1.3em;" class="title" title="Doses de vaccin
@@ -549,39 +580,15 @@ administrées">Data Utility</h2>
       <div class="infoTileDosesAdministered">
         <div class="dosesAdministered"></div>
       </div>
-      <div>`+duAvailable+`</div>
-      <div class="infoTileData">
-        <h2 class="legend">
-          <div class="color" style="background: rgb(58, 154,80);"></div>
-          <div class="description">Residential Services<br> (Up to 1Gbps)</div>
-          <div class="total">`+duYes+`</div>
-        </h2>
-        <h2 class="legend">
-          <div class="color" style="background:rgb(55, 55, 55);"></div>
-          <div class="description">Commercial Services<br> (Up to 10Gbs)</div>
-          <div class="total ">No</div>
-        </h2>
-        <div style="margin-top:20px" class="deltaConfirmed">Estimated Date: 23/11/`+year+`*</div>
-      </div>
-
+      <div>`+duAvailable+`</div>`+ duHtml +`
       <div class="infoTileConfirmedHeader">
         <div>
         <h2 style="font-size:1.3em;" class="title" title="RDN">Rapid Deployment Network</h2>
         </div>
       </div>
       <div><h6 style="color:green;">`+rdnAvailable+`
-      <div class="bar">
-        <div class="slice" style="background: rgb(221, 221, 221); width: 180px; position:relative;"></div>
-        <div class="slice" style="background:`+rdnColor+`; width: `+rdnPercent*180+`px; left: -180px; position: relative;"></div>
-        <!--<div class="slice" style="background: rgb(58, 154, 80); width: 1.125px; left: -451.79px; position: relative;"></div>-->
-      </div>
-      <div class="infoTileConfirmed">
-        <div style="color:`+rdnColor+`;" class="confirmed">`+Math.round(rdnPercent*50)+`Mbps</div>
-        <div class="deltaConfirmed" title="Nouveaux cas au cours des dernières
-24&nbsp;heures">Signal Strength: `+ rdnSignal + `</div>
-      </div>
-      <div style="margin-top:20px" class="deltaConfirmed">Estimated Date: 31/03/2022*</div>
-      <div style="font-size:0.8em;">*Represents worst case estimate</div>
+
+      `+rdnHtml+`
       </div>
     </div>`;
   }
@@ -690,11 +697,12 @@ administrées">Rapid Deployment Network</h2>
       container: 'map',
       // Replace YOUR_STYLE_URL with your style URL.
       //  style: 'mapbox://styles/kevincogs/ckpyontrg1a2817mis9lkfrk0',
-      style: 'mapbox://styles/kevincogs/ckpyontrg1a2817mis9lkfrk0',
+    //  style: 'mapbox://styles/kevincogs/ckpyontrg1a2817mis9lkfrk0',
+      style: 'mapbox://styles/mapbox/light-v10',
       center: [-62.621557, 45.630748],
-      zoom: 9.5,
-      pitch: 45,
-      bearing: -17.6,
+      zoom: 9.5
+    //  pitch: 45,
+    //  bearing: -17.6,
     });
 
 
@@ -711,8 +719,10 @@ administrées">Rapid Deployment Network</h2>
 
       map.addSource('civics', {
         'type': 'geojson',
-        'data':'civics.geojson'
+        'data':'map_Oct12th.geojson'
       });
+
+
 
       // add the DEM source as a terrain layer with exaggerated height
       //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
@@ -723,9 +733,30 @@ administrées">Rapid Deployment Network</h2>
             'source':'civics',
             'paint': {
               'circle-radius':3,
-              'circle-color': "#aaa"
+              'circle-color': [
+                  'match',
+                  ['get', 'serAvail'],
+                  'rdn',
+                  '#fbb03b',
+                  'du',
+                  '#223b53',
+                  'both',
+                  '#3cb043',
+                  /* other */ '#ccc'
+                ]
             }
           });
+
+          map.addLayer(
+          {
+          'id': 'hillshading',
+          'source': 'dem',
+          'type': 'hillshade'
+          // insert below waterway-river-canal-shadow;
+          // where hillshading sits in the Mapbox Outdoors style
+          },
+          'waterway-river-canal-shadow'
+          );
 
       // add a sky layer that will show when the map is highly pitched
       map.addLayer({
@@ -759,7 +790,40 @@ administrées">Rapid Deployment Network</h2>
 
     /*forEach((features, feat) => {
       feat.layer.paint["circle-color"]={a=1,r=1,g=1,b=1};
+
     });*/
+
+    const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+    });
+
+    map.on('mouseenter', 'civics-layer', (e) => {
+ // Change the cursor style as a UI indicator.
+ map.getCanvas().style.cursor = 'pointer';
+
+ // Copy coordinates array.
+ const coordinates = e.features[0].geometry.coordinates.slice();
+
+ // Ensure that if the map is zoomed out such that multiple
+ // copies of the feature are visible, the popup appears
+ // over the copy being pointed to.
+ while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+ coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+ }
+
+ // Populate the popup and set its coordinates
+ // based on the feature found.
+ var feature = e.features[0];
+ var rdnSignal = feature.properties["bestSigstr"];
+ if (rdnSignal == "null") rdnSignal = -120;
+ popup.setLngLat(coordinates).setHTML(popupTemplate(rdnSignal,feature.properties.year, feature)).addTo(map);
+ });
+
+ map.on('mouseleave', 'civics-layer', () => {
+ map.getCanvas().style.cursor = '';
+ popup.remove();
+ });
 
     // Adds Pop-up window
     map.on('click', function(e) {
@@ -782,7 +846,7 @@ administrées">Rapid Deployment Network</h2>
       //   .addTo(map);
       // });
 
-      var rdnSignal = bestSignal(feature);
+      var rdnSignal = feature.properties["bestSigStr"];
 
 
       //Create a popup with conditions
@@ -798,7 +862,7 @@ administrées">Rapid Deployment Network</h2>
     });
 
 
-    var specialLayers = ['fiber-simple-2', 'wireless-1', 'nointerent-3'];
+   var specialLayers = ['fiber-simple-2', 'wireless-1', 'nointerent-3'];
 
     for (let i = 0; i < 3; i++) {
       let currentLayer = specialLayers[i];;
